@@ -33,9 +33,9 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <OGRE/OgreMaterialManager.h>
-#include <OGRE/OgreGpuProgramManager.h>
-#include <OGRE/OgreHighLevelGpuProgramManager.h>
+#include <OgreMaterialManager.h>
+#include <OgreGpuProgramManager.h>
+#include <OgreHighLevelGpuProgramManager.h>
 #include <std_srvs/Empty.h>
 
 #ifdef Q_OS_MAC
@@ -100,13 +100,13 @@ bool reloadShaders(std_srvs::Empty::Request& /*unused*/, std_srvs::Empty::Respon
   return true;
 }
 
-VisualizerApp::VisualizerApp() : app_(nullptr), continue_timer_(nullptr), frame_(nullptr)
+VisualizerApp::VisualizerApp() : continue_timer_(nullptr), frame_(nullptr)
 {
 }
 
 void VisualizerApp::setApp(QApplication* app)
 {
-  app_ = app;
+  Q_UNUSED(app);
 }
 
 bool VisualizerApp::init(int argc, char** argv)
@@ -202,7 +202,6 @@ bool VisualizerApp::init(int argc, char** argv)
       RenderSystem::forceNoStereo();
 
     frame_ = new VisualizationFrame();
-    frame_->setApp(this->app_);
     if (!help_path.empty())
     {
       frame_->setHelpPath(QString::fromStdString(help_path));
@@ -252,7 +251,7 @@ VisualizerApp::~VisualizerApp()
 void VisualizerApp::startContinueChecker()
 {
   continue_timer_ = new QTimer(this);
-  connect(continue_timer_, SIGNAL(timeout()), this, SLOT(checkContinue()));
+  connect(continue_timer_, &QTimer::timeout, this, &VisualizerApp::checkContinue);
   continue_timer_->start(100);
 }
 

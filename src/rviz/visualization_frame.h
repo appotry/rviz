@@ -78,7 +78,7 @@ public:
   VisualizationFrame(QWidget* parent = nullptr);
   ~VisualizationFrame() override;
 
-  void setApp(QApplication* app);
+  [[deprecated("setApp() not needed anymore")]] void setApp(QApplication* app);
 
   /** @brief Call this @e before initialize() to have it take effect. */
   void setShowChooseNewMaster(bool show);
@@ -269,6 +269,7 @@ protected Q_SLOTS:
 
   void reset();
 
+  void onPanelDeleted(QObject* dock);
   void onHelpDestroyed();
 
   void hideLeftDock(bool hide);
@@ -326,8 +327,6 @@ protected:
   void setDisplayConfigFile(const std::string& path);
 
   void hideDockImpl(Qt::DockWidgetArea area, bool hide);
-
-  QApplication* app_;
 
   RenderPanel* render_panel_;
 

@@ -27,11 +27,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <OGRE/OgreCamera.h>
-#include <OGRE/OgrePlane.h>
-#include <OGRE/OgreRay.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreViewport.h>
+#include <OgreCamera.h>
+#include <OgrePlane.h>
+#include <OgreRay.h>
+#include <OgreSceneNode.h>
+#include <OgreViewport.h>
 
 #include <rviz/render_panel.h>
 #include <rviz/selection/selection_handler.h>
@@ -53,7 +53,7 @@ InteractionTool::InteractionTool()
   hide_inactive_property_ =
       new BoolProperty("Hide Inactive Objects", true,
                        "While holding down a mouse button, hide all other Interactive Objects.",
-                       getPropertyContainer(), SLOT(hideInactivePropertyChanged()), this);
+                       getPropertyContainer(), &InteractionTool::hideInactivePropertyChanged, this);
 }
 
 InteractionTool::~InteractionTool()
@@ -143,7 +143,7 @@ int InteractionTool::processMouseEvent(ViewportMouseEvent& event)
   bool need_selection_update = context_->getFrameCount() > last_selection_frame_count_;
 
   // We are dragging if a button was down and is still down
-  Qt::MouseButtons buttons = event.buttons_down & (Qt::LeftButton | Qt::RightButton | Qt::MidButton);
+  Qt::MouseButtons buttons = event.buttons_down & (Qt::LeftButton | Qt::RightButton | Qt::MiddleButton);
   if (event.type == QEvent::MouseButtonPress)
     buttons &= ~event.acting_button;
   bool dragging = buttons != 0;

@@ -39,17 +39,17 @@
 #include "ros/ros.h"
 #include <ros/package.h>
 
-#include <OGRE/OgreRoot.h>
-#include <OGRE/OgreRenderWindow.h>
-#include <OGRE/OgreSceneManager.h>
-#include <OGRE/OgreViewport.h>
-#include <OGRE/OgreRectangle2D.h>
-#include <OGRE/OgreMaterial.h>
-#include <OGRE/OgreMaterialManager.h>
-#include <OGRE/OgreTextureUnitState.h>
-#include <OGRE/OgreSharedPtr.h>
-#include <OGRE/OgreTechnique.h>
-#include <OGRE/OgreSceneNode.h>
+#include <OgreRoot.h>
+#include <OgreRenderWindow.h>
+#include <OgreSceneManager.h>
+#include <OgreViewport.h>
+#include <OgreRectangle2D.h>
+#include <OgreMaterial.h>
+#include <OgreMaterialManager.h>
+#include <OgreTextureUnitState.h>
+#include <OgreSharedPtr.h>
+#include <OgreTechnique.h>
+#include <OgreSceneNode.h>
 
 #include "image_view.h"
 
@@ -58,7 +58,12 @@ using namespace rviz;
 ImageView::ImageView(QWidget* parent) : QtOgreRenderWindow(parent), texture_it_(nh_)
 {
   setAutoRender(false);
+#if (OGRE_VERSION < OGRE_VERSION_CHECK(13, 0, 0))
   scene_manager_ = ogre_root_->createSceneManager(Ogre::ST_GENERIC, "TestSceneManager");
+#else
+  scene_manager_ = ogre_root_->createSceneManager(Ogre::DefaultSceneManagerFactory::FACTORY_TYPE_NAME,
+                                                  "TestSceneManager");
+#endif
 }
 
 ImageView::~ImageView()
@@ -110,6 +115,7 @@ void ImageView::showEvent(QShowEvent* event)
   Ogre::TextureUnitState* tu = material->getTechnique(0)->getPass(0)->createTextureUnitState();
   tu->setTextureName(texture_->getTexture()->getName());
   tu->setTextureFiltering(Ogre::TFO_NONE);
+  tu->setTextureAddressingMode(Ogre::TextureUnitState::TAM_CLAMP);
 
   Ogre::Rectangle2D* rect = new Ogre::Rectangle2D(true);
   rect->setCorners(-1.0f, 1.0f, 1.0f, -1.0f);
@@ -124,7 +130,7 @@ void ImageView::showEvent(QShowEvent* event)
   node->setVisible(true);
 
   QTimer* timer = new QTimer(this);
-  connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+  connect(timer, &QTimer::timeout, this, &ImageView::onTimer);
   timer->start(33);
 }
 

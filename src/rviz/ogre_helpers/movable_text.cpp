@@ -42,19 +42,17 @@
 #include "movable_text.h"
 #include <rviz/ogre_helpers/version_check.h>
 
-#include <OGRE/OgreVector3.h>
-#include <OGRE/OgreQuaternion.h>
-#include <OGRE/OgreRoot.h>
-#include <OGRE/OgreCamera.h>
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreMaterialManager.h>
-#include <OGRE/OgreHardwareBufferManager.h>
-#include <OGRE/Overlay/OgreFontManager.h>
-#include <OGRE/Overlay/OgreFont.h>
-#if OGRE_VERSION < OGRE_VERSION_CHECK(1, 12, 0)
-#include <OGRE/OgreUTFString.h>
-#else
-#include <OGRE/Overlay/OgreUTFString.h>
+#include <rviz/ogre_helpers/ogre_vector.h>
+#include <OgreQuaternion.h>
+#include <OgreRoot.h>
+#include <OgreCamera.h>
+#include <OgreSceneNode.h>
+#include <OgreMaterialManager.h>
+#include <OgreHardwareBufferManager.h>
+#include <Overlay/OgreFontManager.h>
+#include <Overlay/OgreFont.h>
+#if (OGRE_VERSION < OGRE_VERSION_CHECK(13, 0, 0))
+#include <OgreUTFString.h>
 #endif
 
 #include <sstream>
@@ -219,7 +217,11 @@ void MovableText::showOnTop(bool show)
 
 void MovableText::_setupGeometry()
 {
+#if (OGRE_VERSION >= OGRE_VERSION_CHECK(13, 0, 0))
+  Ogre::String utfCaption(mCaption);
+#else
   Ogre::UTFString::utf32string utfCaption(Ogre::UTFString(mCaption).asUTF32());
+#endif
 
   assert(mpFont);
   assert(!mpMaterial.isNull());
@@ -466,6 +468,7 @@ void MovableText::_updateColors()
 {
   assert(mpFont);
   assert(!mpMaterial.isNull());
+  assert(mRenderOp.vertexData);
 
   // Convert to system-specific
   RGBA color;

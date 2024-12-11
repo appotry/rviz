@@ -33,8 +33,8 @@
 #include <utility>
 
 
-#include <OGRE/OgreSceneManager.h>
-#include <OGRE/OgreCamera.h>
+#include <OgreSceneManager.h>
+#include <OgreCamera.h>
 
 #include <rviz/display.h>
 #include <rviz/view_controller.h>
@@ -126,8 +126,13 @@ void RenderPanel::wheelEvent(QWheelEvent* event)
   int last_x = mouse_x_;
   int last_y = mouse_y_;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+  mouse_x_ = event->position().x();
+  mouse_y_ = event->position().y();
+#else
   mouse_x_ = event->x();
   mouse_y_ = event->y();
+#endif
 
   if (context_)
   {
@@ -189,7 +194,7 @@ void RenderPanel::contextMenuEvent(QContextMenuEvent* /*event*/)
 
   if (context_menu)
   {
-    connect(context_menu.get(), SIGNAL(aboutToHide()), this, SLOT(onContextMenuHide()));
+    connect(context_menu.get(), &QMenu::aboutToHide, this, &RenderPanel::onContextMenuHide);
     context_menu->exec(QCursor::pos());
   }
 }

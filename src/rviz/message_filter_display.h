@@ -55,15 +55,15 @@ class RVIZ_EXPORT _RosTopicDisplay : public Display
 public:
   _RosTopicDisplay()
   {
-    topic_property_ = new RosTopicProperty("Topic", "", "", "", this, SLOT(updateTopic()));
-    unreliable_property_ =
-        new BoolProperty("Unreliable", false, "Prefer UDP topic transport", this, SLOT(updateTopic()));
+    topic_property_ = new RosTopicProperty("Topic", "", "", "", this, &_RosTopicDisplay::updateTopic);
+    unreliable_property_ = new BoolProperty("Unreliable", false, "Prefer UDP topic transport", this,
+                                            &_RosTopicDisplay::updateTopic);
     queue_size_property_ =
         new IntProperty("Queue Size", 10,
                         "Size of TF message filter queue.\n"
                         "Increasing this is useful if your TF data is delayed significantly "
                         "w.r.t. your data, but it can greatly increase memory usage as well.",
-                        this, SLOT(updateQueueSize()));
+                        this, &_RosTopicDisplay::updateQueueSize);
     queue_size_property_->setMin(0);
     qRegisterMetaType<boost::shared_ptr<const void>>(); // required to send via queued connection
   }
@@ -213,6 +213,9 @@ protected:
 
   void processTypeErasedMessage(boost::shared_ptr<const void> type_erased_msg) override
   {
+    if (!isEnabled())
+      return;
+
     auto msg = boost::static_pointer_cast<const MessageType>(type_erased_msg);
     ++messages_received_;
     setStatus(StatusProperty::Ok, "Topic", QString::number(messages_received_) + " messages received");

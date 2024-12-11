@@ -32,15 +32,16 @@
 
 #include <sensor_msgs/Image.h>
 
-#include <OGRE/OgreTexture.h>
-#include <OGRE/OgreImage.h>
-#include <OGRE/OgreSharedPtr.h>
+#include <OgreTexture.h>
+#include <OgreImage.h>
+#include <OgreSharedPtr.h>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
 #include <ros/ros.h>
 
+#include <deque>
 #include <stdexcept>
 
 namespace rviz

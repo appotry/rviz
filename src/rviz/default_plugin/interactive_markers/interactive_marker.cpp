@@ -31,13 +31,13 @@
 
 #include <QMenu>
 
-#include <OGRE/OgreSceneNode.h>
-#include <OGRE/OgreSceneManager.h>
-#include <OGRE/OgreMaterialManager.h>
-#include <OGRE/OgreResourceGroupManager.h>
-#include <OGRE/OgreSubEntity.h>
-#include <OGRE/OgreMath.h>
-#include <OGRE/OgreRenderWindow.h>
+#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
+#include <OgreMaterialManager.h>
+#include <OgreResourceGroupManager.h>
+#include <OgreSubEntity.h>
+#include <OgreMath.h>
+#include <OgreRenderWindow.h>
 
 #include <ros/ros.h>
 #include <interactive_markers/tools.h>
@@ -261,7 +261,7 @@ void InteractiveMarker::populateMenu(QMenu* menu, std::vector<uint32_t>& ids)
     {
       IntegerAction* action =
           new IntegerAction(makeMenuString(node.entry.title), menu, (int)node.entry.id);
-      connect(action, SIGNAL(triggered(int)), this, SLOT(handleMenuSelect(int)));
+      connect(action, &IntegerAction::triggered, this, &InteractiveMarker::handleMenuSelect);
       menu->addAction(action);
     }
     else

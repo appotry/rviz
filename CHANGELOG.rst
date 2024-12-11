@@ -2,6 +2,104 @@
 Changelog for package rviz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.14.25 (2024-05-21)
+--------------------
+* Fix `#1825 <https://github.com/ros-visualization/rviz/issues/1825>`_/`#1830 <https://github.com/ros-visualization/rviz/issues/1830>`_: segfault when hiding deleted properties (`#1831 <https://github.com/ros-visualization/rviz/issues/1831>`_)
+* Contributors: Robert Haschke
+
+1.14.24 (2024-05-15)
+--------------------
+* Fix jitter in Map display updates (`#1826 <https://github.com/ros-visualization/rviz/issues/1826>`_)
+* Contributors: Robert Haschke
+
+1.14.23 (2024-05-09)
+--------------------
+* Fix `#1825 <https://github.com/ros-visualization/rviz/issues/1825>`_
+* Contributors: Robert Haschke
+
+1.14.22 (2024-04-29)
+--------------------
+* Reenable python bindings
+* Contributors: Robert Haschke
+
+1.14.21 (2024-04-25)
+--------------------
+* ImageDisplay: publish mouse clicks (`#1737 <https://github.com/ros-visualization/rviz/issues/1737>`_)
+* Add maximize button to Image and Camera display (`#1803 <https://github.com/ros-visualization/rviz/issues/1803>`_)
+* Gracefully handle loops in TF tree (`#1820 <https://github.com/ros-visualization/rviz/issues/1820>`_)
+* Ogre 13 compatibility
+* Qt6 compatibility (`#1813 <https://github.com/ros-visualization/rviz/issues/1813>`_)
+* Fix Qt 5.15 API deprecation warnings
+* ScrewDisplay: Fix initialization of HideSmallValues property (`#1810 <https://github.com/ros-visualization/rviz/issues/1810>`_)
+* Fix vanishing "Global Options" when adding a RobotModelDisplay (`#1808 <https://github.com/ros-visualization/rviz/issues/1808>`_)
+* Modernize to Qt5 slots (`#1790 <https://github.com/ros-visualization/rviz/issues/1790>`_)
+* Optionally deprecate old-style slots via -DRVIZ_DEPRECATE_QT4_SLOTS
+* Improve error handling in LaserScanDisplay (`#1798 <https://github.com/ros-visualization/rviz/issues/1798>`_)
+* MapDisplay: Fix crash after map update (`#1793 <https://github.com/ros-visualization/rviz/issues/1793>`_)
+* Call propertyHiddenChanged synchronously (`#1795 <https://github.com/ros-visualization/rviz/issues/1795>`_)
+* Replace obsolete QPixmap::grabWindow() with QScreen::grabWindow() (`#1794 <https://github.com/ros-visualization/rviz/issues/1794>`_)
+* Contributors: Miguel Riem de Oliveira, Robert Haschke, Simon Schmeisser, Stefan Fabian, vineet131
+
+1.14.20 (2023-03-30)
+--------------------
+* Improvements to TF display (`#1789 <https://github.com/ros-visualization/rviz/issues/1789>`_)
+
+  - Add regex filters (white+black list) to TF Display (`#1744 <https://github.com/ros-visualization/rviz/issues/1744>`_)
+  - Reparent children to root tree node when deleting a frame
+  - Insert frame properties sorted
+  - Create tree nodes also if the frame is not connected to rviz' global frame
+* RobotModel: Fix orientation of joint axis arrow (`#1788 <https://github.com/ros-visualization/rviz/issues/1788>`_)
+* Use static QCoreApplication::processEvents() w/o QApplication instance (`#1772 <https://github.com/ros-visualization/rviz/issues/1772>`_)
+* Contributors: Blaz Potokar, Robert Haschke, Yannis Gerlach
+
+1.14.19 (2022-08-14)
+--------------------
+* Fixup to `#1760 <https://github.com/ros-visualization/rviz/issues/1760>`_, SplitterHandle (`#1766 <https://github.com/ros-visualization/rviz/issues/1766>`_)
+* Contributors: Robert Haschke
+
+1.14.17 (2022-08-12)
+--------------------
+* Fixup to `#1759 <https://github.com/ros-visualization/rviz/issues/1759>`_
+* Contributors: Robert Haschke
+
+1.14.16 (2022-08-09)
+--------------------
+* MFD: Don't process messages when disabled (`#1765 <https://github.com/ros-visualization/rviz/issues/1765>`_)
+* Fix image display wrapping (`#1763 <https://github.com/ros-visualization/rviz/issues/1763>`_)
+* Contributors: Robert Haschke
+
+1.14.15 (2022-08-01)
+--------------------
+* Improve SplitterHandle of PropertyTreeWidgets (`#1760 <https://github.com/ros-visualization/rviz/issues/1760>`_)
+
+  * Suppress horizontal scrolling and auto-resizing of columns
+  * Double click auto-adjusts to content
+* Fix segfault occuring for direct dock panel deletion (`#1759 <https://github.com/ros-visualization/rviz/issues/1759>`_)
+* Fix race conditions in PointCloud displays (`#1754 <https://github.com/ros-visualization/rviz/issues/1754>`_)
+* Acquire mutexes before destroying PointCloudCommon
+* PointCloud displays: unsubscribe before destroying PointCloudCommon
+* Fix segfault in ``TimePanel::onTimeSignal()`` (`#1753 <https://github.com/ros-visualization/rviz/issues/1753>`_): Drop source Display* argument, which is a dangling pointer if the Display was deleted meanwhile
+* OGRE compatibility layer: more precise version info
+* Use more verbose material names for robot links (robot link material -> robot link <link name>:<material name>)
+* Fix transparency of RobotLinks with multiple visuals and different alpha values (`#1751 <https://github.com/ros-visualization/rviz/issues/1751>`_)
+* Maintain original (mesh) materials for RobotLinks (`#1704 <https://github.com/ros-visualization/rviz/issues/1704>`_, `#1732 <https://github.com/ros-visualization/rviz/issues/1732>`_)
+* Improve TF time syncing (`#1698 <https://github.com/ros-visualization/rviz/issues/1698>`_)
+
+  - TimePanel: Integrate experimental view
+  - New mode SyncFrame, syncing TF lookups within a visualization frame
+* Conditionally include OgreVector3.h vs. OgreVector.h for OGRE 1.9 vs. 1.12 (`#1741 <https://github.com/ros-visualization/rviz/issues/1741>`_)
+* Don't disable display if associated widget tab changes (`#1739 <https://github.com/ros-visualization/rviz/issues/1739>`_)
+* Drop OGRE/ from #include directives (`#1730 <https://github.com/ros-visualization/rviz/issues/1730>`_)
+* Fix segfault when no tools are available (`#1729 <https://github.com/ros-visualization/rviz/issues/1729>`_)
+* GridCells: implement setTopic() (`#1722 <https://github.com/ros-visualization/rviz/issues/1722>`_)
+* Adaptions for Ubuntu 22 (`#1717 <https://github.com/ros-visualization/rviz/issues/1717>`_)
+
+  * Switch to new boost/bind/bind.hpp
+  * Drop C++11 COMPILE_FLAGS
+  * Do not force obsolete CXX14
+  * Support python_qt_bindings with sip5
+* Contributors: AndreasR30, Brosong, Jochen Sprickerhof, Lucas Walter, Matthijs van der Burgh, Robert Haschke
+
 1.14.14 (2022-02-12)
 --------------------
 * Fixup `#1497 <https://github.com/ros-visualization/rviz/issues/1497>`_: Initialize ``fixed_frame_id``
